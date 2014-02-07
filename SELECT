@@ -1,0 +1,23 @@
+SELECT
+	DATE_FORMAT(FROM_UNIXTIME(t.date),'%Y-%m-%d') AS date,
+	DATE_FORMAT(FROM_UNIXTIME(t.date),'%Y-%j') AS interval_group,
+	AVG(t.price*t.amount) AS avg_price,
+	SUBSTRING_INDEX(GROUP_CONCAT(CAST(t.price AS CHAR) ORDER BY date), ',', 1 ) as open,
+  	SUBSTRING_INDEX(GROUP_CONCAT(CAST(t.price AS CHAR) ORDER BY date DESC), ',', 1 ) as close
+	MAX(t.price) AS max_price,
+	MIN(t.price) AS min_price,
+	SUM(t.amount) AS volume
+FROM tbl_mtgox_trades AS t
+GROUP BY `interval_group`
+ORDER BY `interval_group` DESC
+
+SELECT
+  MIN(_low),
+  MAX(_high),
+  AVG(_volume),
+  CONCAT(YEAR(_date), "-", WEEK(_date)) AS myweek,
+  SUBSTRING_INDEX(GROUP_CONCAT(CAST(t.price AS CHAR) ORDER BY date), ',', 1 ) as open,
+  SUBSTRING_INDEX(GROUP_CONCAT(CAST(t.price AS CHAR) ORDER BY date DESC), ',', 1 ) as close
+FROM mystockdata
+GROUP BY myweek
+ORDER BY _date;
