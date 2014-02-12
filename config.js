@@ -22,7 +22,7 @@ config.EMA = {
   candles: 200,
   // the difference between the EMAs (to act as triggers)
   sellTreshold: -0.15,
-  buyTreshold: 0.15
+  buyTreshold: 0.5
 };
 
 // Monitor the live market
